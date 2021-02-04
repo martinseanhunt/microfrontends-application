@@ -16,6 +16,9 @@ const prodConfig = {
     // Whenever we build the project for prod we append the hash of the file to the filename
     // this avoids issues with caching etc.
     filename: '[name].[contenthash].js',
+    // This is the path to the root of this FE in production after it has been built. In this case it's
+    // the path to root of this container FE on our s3 bucket
+    publicPath: '/container/latest/',
   },
   plugins: [
     new ModuleFederationPlugin({
