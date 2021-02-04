@@ -1,0 +1,35 @@
+name: deploy-marketing
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'marketing/**'
+
+defaults:
+  run:
+    working-directory: marketing
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn install
+      - run: yarn build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      # sync the built files to our s3 bucket
+      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/marketing/latest
+
+      # for remote FE's we need to invalidate the remote entry file as that doesn't have the hash appended.
+      # No need to do the index file on remotes as the index file is only used in development.
+      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/marketing/latest/remoteEntry.js"

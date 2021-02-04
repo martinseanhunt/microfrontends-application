@@ -7,6 +7,7 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const commonConfig = require('./webpack.common')
 const packageJson = require('../package.json')
 
+// This is set in github secrets so that we have it available to us at build time
 const domain = process.env.PRODUCTION_DOMAIN
 
 const prodConfig = {
@@ -32,7 +33,7 @@ const prodConfig = {
 
         // We need to use production urls here. for this setup we're putting each FE in a folder with the
         // remote name as the folder name.
-        marketing: `marketing@${domain}/marketing/remoteEntry.js`,
+        marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`,
       },
       // Shared deps - see marketing for detailed comments
       shared: [packageJson.dependencies],
