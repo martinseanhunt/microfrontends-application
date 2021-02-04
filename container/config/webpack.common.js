@@ -1,3 +1,6 @@
+// inject script tags in to html file
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
   module: {
     // Loader to tell webpack to process files as they are imported
@@ -22,4 +25,9 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+  ],
 }

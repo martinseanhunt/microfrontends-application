@@ -1,7 +1,5 @@
 // Funciton to merge together 2 different webpack configs
 const { merge } = require('webpack-merge')
-// inject script tags in to html file
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 // Adding module federation plugin to the dev config file because the production setup
 // for module federation will be slightly different
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
@@ -18,9 +16,6 @@ const devConfig = {
     },
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
     new ModuleFederationPlugin({
       // The name of our micro front end
       // NOTE: There's a weird bug whith the federatin plugin where we can't use the name we set here as
