@@ -8,7 +8,7 @@ const mount = (el) => {
   ReactDOM.render(<App />, el)
 }
 
-// If in development mode and running in isolation mountthe app directly
+// If in development mode and running in isolation mount the app directly
 if (process.env.NODE_ENV === 'development') {
   // look for a unique element ID which is not going to be present on other frontends
   const el = document.querySelector('#_marketing-frontend-development-only')
