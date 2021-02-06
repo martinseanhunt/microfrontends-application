@@ -1,12 +1,14 @@
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 
-import { MarketingApp } from './components/MarketingApp'
+import { Header } from './components/Header'
+import { MarketingApp } from './components/remote/MarketingApp'
 
 export function App() {
   return (
-    <>
-      <h1>Hello there, I am the container</h1>
+    <BrowserRouter>
+      <Header />
       <MarketingApp />
-    </>
+    </BrowserRouter>
   )
 }
