@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 
 // Importing the mount function from the remote marketing FE.
 // Remember, the mount function is allowing us to pass an element where we want to mount the FE
@@ -9,10 +10,27 @@ import { mount } from 'marketing/MarketingApp'
 
 export function MarketingApp() {
   const ref = useRef()
+  const history = useHistory()
 
   useEffect(() => {
-    // Passing the ref of the div where we want to mount the marketing FE
-    mount(ref.current)
+    // Passing the ref of the div where we want to mount the marketing FE as well as some options
+    // mount returns an object with some methods for passing data down to a child FE.
+    const { onParentNavigate } = mount(ref.current, {
+      // A calback to be called when the child application updates it's memory history so we can reflect that in
+      // the browser history / address bar.
+
+      // We send the onNavigate function the new location as an argument. location contains the pathname which
+      // we rename to nextPathName
+      onNavigate: ({ pathname: nextPathName }) => {
+        // updating the containers history object when the path changes in marketing app. only if the new pathname
+        // is not the same as the current pathname. This avoids an infinite loop!
+        const { pathname } = history.location
+        if (pathname !== nextPathName) history.push(nextPathName)
+      },
+    })
+
+    // listner to detect changes in navigation to the continae and pass them down to the child
+    history.listen(onParentNavigate)
   }, [])
 
   return <div ref={ref} />

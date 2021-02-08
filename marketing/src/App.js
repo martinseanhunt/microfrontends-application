@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Switch, Route, Router } from 'react-router-dom'
 import {
   StylesProvider,
   createGenerateClassName,
@@ -13,7 +13,7 @@ const generateClassName = createGenerateClassName({
   productionPrefix: 'ma',
 })
 
-export const App = () => (
+export const App = ({ history }) => (
   <div>
     {/* 
       Giving styles provider an extra option  to make sure that classnames are sufficently random
@@ -22,12 +22,18 @@ export const App = () => (
       for more info.
     */}
     <StylesProvider generateClassName={generateClassName}>
-      <BrowserRouter>
+      {/* 
+        Here we want to use memory history instead of browser history to avoid conflicts / race conditions
+        between different services. Only use a browser history within a container app.
+
+        Router allows you to create and provide the history object you want to use rather than have it created for you
+      */}
+      <Router history={history}>
         <Switch>
           <Route exact path="/pricing" component={Pricing} />
           <Route path="/" component={Landing} />
         </Switch>
-      </BrowserRouter>
+      </Router>
     </StylesProvider>
   </div>
 )
