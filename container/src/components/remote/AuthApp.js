@@ -6,9 +6,9 @@ import { useHistory } from 'react-router-dom'
 
 // Another way we could do this is to simply have FE's export components. However, in doing that we would
 // lose the flexibility to use frameworks other than react.
-import { mount } from 'marketing/MarketingApp'
+import { mount } from 'auth/AuthApp'
 
-export default function MarketingApp() {
+export default function AuthApp() {
   const ref = useRef()
   const history = useHistory()
 
@@ -27,6 +27,13 @@ export default function MarketingApp() {
         const { pathname } = history.location
         if (pathname !== nextPathName) history.push(nextPathName)
       },
+
+      // setting the initial path that the FE loads since this FE has nothing at / and memory history assumes
+      // we start at / by default
+      // https://www.udemy.com/course/microfrontend-course/learn/lecture/23275298#content
+      // techincally the marketing app suffers from the same issue but because we're loading / by default it doesn't
+      // ever manfiest.
+      initialPath: history.location.pathname,
     })
 
     // listner to detect changes in navigation to the continae and pass them down to the child

@@ -10,7 +10,7 @@ const packageJson = require('../package.json')
 const devConfig = {
   mode: 'development',
   devServer: {
-    port: 8081,
+    port: 8082,
     historyApiFallback: true,
   },
   output: {
@@ -24,7 +24,7 @@ const devConfig = {
 
     // instdead we can use the entire URL including the specific port for this micro FE. That way this will work in
     // both isolation and from within the container in development.
-    publicPath: 'http://localhost:8081/',
+    publicPath: 'http://localhost:8082/',
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -33,7 +33,7 @@ const devConfig = {
       // an id of a div... i.e. <div id="marketing" /> and try to select it with a querySelector.
       // it creates a conflict between variable names in the global context because the browser creates a global var
       // with the same name as the ID of the div. this plugin also creates a global variable with the name defined here.
-      name: 'marketing',
+      name: 'auth',
       // The remote entry point to our micro front end. This is a sererate bundle to our
       // regular bundle. They're both created so we can still run our micro front end in isolation (bundled in
       // to dist/main.js). remoteEnty is emitting a second set of files from webpack which are exposed to other
@@ -50,7 +50,7 @@ const devConfig = {
       exposes: {
         // Now that we're using the bootstrap / index setup and bootstrap is exporting a mount function, we no longer
         // want to expose index. Index will only be used by the service when it's run in isolation.
-        './MarketingApp': './src/mount',
+        './AuthApp': './src/mount',
       },
       // Shared are packages which maight be being used in multiple micro front ends. This makes sure the
       // package only needs to be loaded once by a host if multiple FE's use the package.

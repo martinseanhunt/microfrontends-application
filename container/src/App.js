@@ -1,12 +1,18 @@
-import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import React, { lazy, Suspense } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import {
   StylesProvider,
   createGenerateClassName,
 } from '@material-ui/core/styles'
 
 import { Header } from './components/Header'
-import { MarketingApp } from './components/remote/MarketingApp'
+import { Progress } from './components/Progress'
+
+// Lazy load the components responsible for mounting the micro front ends so we only load the JS
+// when they are going to be shown in the browser.
+// Need to use default exports with these
+const MarketingLazy = lazy(() => import('./components/remote/MarketingApp'))
+const Authlazy = lazy(() => import('./components/remote/AuthApp'))
 
 const generateClassName = createGenerateClassName({
   // Prefixing all minified classnames with a string unique to this micro FE to avoid class naem collisoins.
@@ -31,7 +37,16 @@ export function App() {
         */}
         <BrowserRouter>
           <Header />
-          <MarketingApp />
+          {/* 
+            using suspense with lazy to make sure micro FE code isn't loaded before it's neeed 
+            fallback is shown while the code for auth or marketing is being loaded 
+          */}
+          <Suspense fallback={<Progress />}>
+            <Switch>
+              <Route path="/auth" component={Authlazy} />
+              <Route path="/" component={MarketingLazy} />
+            </Switch>
+          </Suspense>
         </BrowserRouter>
       </StylesProvider>
     </>
