@@ -34,6 +34,7 @@ const prodConfig = {
         // We need to use production urls here. for this setup we're putting each FE in a folder with the
         // remote name as the folder name.
         marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`,
+        auth: `auth@${domain}/auth/latest/remoteEntry.js`,
       },
       // Shared deps - see marketing for detailed comments
       shared: [packageJson.dependencies],
