@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import {
   StylesProvider,
@@ -20,6 +20,11 @@ const generateClassName = createGenerateClassName({
 })
 
 export function App() {
+  // signed in state to be passed down to all micro FE's and set via a callback passed to auth micro FE.
+  // in the real world this state could be stored in some global state management solution or just a context along
+  // with anything else we want to store globally.
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
   return (
     <>
       {/* 
@@ -36,14 +41,19 @@ export function App() {
           https://www.udemy.com/course/microfrontend-course/learn/lecture/23241682#content
         */}
         <BrowserRouter>
-          <Header />
+          <Header
+            isSignedIn={isSignedIn}
+            onSignOut={() => setIsSignedIn(false)}
+          />
           {/* 
             using suspense with lazy to make sure micro FE code isn't loaded before it's neeed 
             fallback is shown while the code for auth or marketing is being loaded 
           */}
           <Suspense fallback={<Progress />}>
             <Switch>
-              <Route path="/auth" component={Authlazy} />
+              <Route path="/auth">
+                <Authlazy onSignIn={() => setIsSignedIn(true)} />
+              </Route>
               <Route path="/" component={MarketingLazy} />
             </Switch>
           </Suspense>

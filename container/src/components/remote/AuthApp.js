@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 // lose the flexibility to use frameworks other than react.
 import { mount } from 'auth/AuthApp'
 
-export default function AuthApp() {
+export default function AuthApp({ onSignIn }) {
   const ref = useRef()
   const history = useHistory()
 
@@ -34,6 +34,14 @@ export default function AuthApp() {
       // techincally the marketing app suffers from the same issue but because we're loading / by default it doesn't
       // ever manfiest.
       initialPath: history.location.pathname,
+
+      // passing a callback which will be called when the user signs in or out. We will then store the vaue of This
+      // in our containers state and pass it down to other components as isSignedIn which will be a boolean. In real
+      // world this could be a currentUser object.
+      onAuthChange: () => {
+        onSignIn()
+        console.log('user signed in')
+      },
     })
 
     // listner to detect changes in navigation to the continae and pass them down to the child

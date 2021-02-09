@@ -7,7 +7,10 @@ import { App } from './App'
 // Mount function to start up the app. Takes the element where the app is to be rendered as well as
 // some options. onNavigate is to be called when we navigate from within our app so that the cotnainers browser
 // history can be updated.
-const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
+const mount = (
+  el,
+  { onNavigate, defaultHistory, initialPath, onAuthChange }
+) => {
   // Create a memory history to be used by react router.
   // creating the history object here so we can sync the history of this remote with that of the
   // container. Rather than simply sharing react routers history object we're creating our own generic
@@ -28,7 +31,9 @@ const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
   // memory history has a listen method which will call the provided finction whjenever any navigation occurs
   history.listen(onNavigate)
 
-  ReactDOM.render(<App history={history} />, el)
+  // onAuthChange is a callback coming from the container which is used to track whether the user is signed in
+  // the container will pass the value down to all micro FE's
+  ReactDOM.render(<App history={history} onAuthChange={onAuthChange} />, el)
 
   // Returns an object so we can provide the container with some callbacks it can call to pass things
   // down to this child FE.
