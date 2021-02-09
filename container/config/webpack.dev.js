@@ -29,6 +29,7 @@ const devConfig = {
         // marketing@http://localhost:8081/remoteEntry.js = ["name" of remote]@[url to remote entry file]
         marketing: 'marketing@http://localhost:8081/remoteEntry.js',
         auth: 'auth@http://localhost:8082/remoteEntry.js',
+        dashboard: 'dashboard@http://localhost:8083/remoteEntry.js',
       },
       // Shared deps - see marketing for detailed comments
       shared: [packageJson.dependencies],

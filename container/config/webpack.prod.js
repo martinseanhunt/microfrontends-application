@@ -35,6 +35,7 @@ const prodConfig = {
         // remote name as the folder name.
         marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`,
         auth: `auth@${domain}/auth/latest/remoteEntry.js`,
+        dashboard: `dashboard@${domain}/dashboard/latest/remoteEntry.js`,
       },
       // Shared deps - see marketing for detailed comments
       shared: [packageJson.dependencies],

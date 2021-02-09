@@ -1,15 +1,15 @@
-name: deploy-auth
+name: deploy-dashboard
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'auth/**'
+      - 'dashboard/**'
 
 defaults:
   run:
-    working-directory: auth
+    working-directory: dashboard
 
 jobs:
   build:
@@ -28,8 +28,8 @@ jobs:
           aws-region: eu-west-1
 
       # sync the built files to our s3 bucket
-      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/auth/latest
+      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/dashboard/latest
 
       # for remote FE's we need to invalidate the remote entry file as that doesn't have the hash appended.
       # No need to do the index file on remotes as the index file is only used in development.
-      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/auth/latest/remoteEntry.js"
+      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/dashboard/latest/remoteEntry.js"
